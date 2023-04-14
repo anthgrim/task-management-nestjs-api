@@ -2,9 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskStatus } from './task-status.enum';
 import { CreateTaskDto } from './dtos/create-task.dto';
-import { UpdateTaskDto } from './dtos/update-task.dto';
 import { GetTaskFilterDto } from './dtos/get-tasks-filter.dto';
-import { UpdateStatusDto } from './dtos/update-status.dto';
 import { TasksRepository } from './tasks.repository';
 import { Task } from './task.entity';
 
@@ -73,14 +71,4 @@ export class TasksService {
 
     return task;
   }
-
-  // updateTaskById(id: string, updateTaskDto: UpdateTaskDto): Task {
-  //   const index = this.tasks.findIndex((task) => task.id === id);
-  //   if (index === -1) throw new NotFoundException();
-  //   this.tasks[index] = {
-  //     ...this.tasks[index],
-  //     ...updateTaskDto,
-  //   };
-  //   return this.tasks[index];
-  // }
 }
