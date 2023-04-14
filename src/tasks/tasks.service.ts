@@ -41,7 +41,7 @@ export class TasksService {
     if (search) {
       const lowerCasedSearchFilterQuery = 'LIKE LOWER(:searchFilter)';
       query.andWhere(
-        `LOWER(task.title) ${lowerCasedSearchFilterQuery} OR LOWER(task.description) ${lowerCasedSearchFilterQuery}`,
+        `(LOWER(task.title) ${lowerCasedSearchFilterQuery} OR LOWER(task.description) ${lowerCasedSearchFilterQuery})`,
         { searchFilter: `%${search}%` },
       );
     }
