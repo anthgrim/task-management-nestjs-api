@@ -1,4 +1,5 @@
 import {
+  Logger,
   UseGuards,
   Controller,
   Body,
@@ -21,6 +22,8 @@ import { User } from 'src/auth/user.entity';
 @UseGuards(AuthGuard())
 @Controller('tasks')
 export class TasksController {
+  private logger = new Logger('TasksController');
+
   constructor(private tasksService: TasksService) {}
 
   @Post('/')
@@ -28,6 +31,9 @@ export class TasksController {
     @GetUser() user: User,
     @Body() body: CreateTaskDto,
   ): Promise<Task> {
+    this.logger.verbose(
+      `User ${user.id} creating new task: ${JSON.stringify(body)}`,
+    );
     return this.tasksService.createTask(user, body);
   }
 
@@ -36,11 +42,17 @@ export class TasksController {
     @GetUser() user: User,
     @Query() filterDto: GetTaskFilterDto,
   ): Promise<Task[]> {
+    this.logger.verbose(
+      `User ${
+        user.username
+      } attempting to get tasks with filters ${JSON.stringify(filterDto)} `,
+    );
     return this.tasksService.getTasks(user, filterDto);
   }
 
   @Get('/:id')
   getTaskById(@GetUser() user: User, @Param('id') id: string): Promise<Task> {
+    this.logger.verbose(`User ${user.id} attempting to get task ${id}`);
     return this.tasksService.getTaskById(user, id);
   }
 
@@ -50,6 +62,11 @@ export class TasksController {
     @Param('id') id: string,
     @Body() body: UpdateStatusDto,
   ): Promise<Task> {
+    this.logger.verbose(
+      `USer ${user.id} updating task ${id} with new status ${JSON.stringify(
+        body,
+      )}`,
+    );
     return this.tasksService.updateTaskStatusById(user, id, body.status);
   }
 
